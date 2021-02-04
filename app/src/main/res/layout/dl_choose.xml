@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_gg_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="谷歌-矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_gg_yx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="谷歌-影像"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_tdt_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="天地图-矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+
+        <TextView
+            android:id="@+id/tv_tdt_yx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="天地图-影像"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_tdt_dx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="天地图-地形"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_gd_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="高德-矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_gd_yx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="高德-影像"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line"/>
+        <TextView
+            android:id="@+id/tv_bd_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="百度-矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line"/>
+        <TextView
+            android:id="@+id/tv_bd_yx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="百度-影像"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_tx_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="腾讯-矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_tx_yx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="腾讯-影像"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_tx_dx"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="腾讯-地形"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_arcgis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="arcgis"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_osm_sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="OSM_矢量"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+        <TextView
+            android:id="@+id/tv_lx_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="离线数据"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/View_Line" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

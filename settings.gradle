@@ -1,0 +1,2 @@
+include ':app',":osmdroid-android"
+rootProject.name='OsmdroidDemo'
