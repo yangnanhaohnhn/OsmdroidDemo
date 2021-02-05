@@ -14,8 +14,8 @@ import org.osmdroid.util.MapTileIndex;
  * @date 2019/07/24
  */
 
-public class GoogleTileSource extends TileSourceFactory {
-    private static final String TAG = GoogleTileSource.class.getSimpleName();
+public class CustomTileSource extends TileSourceFactory {
+    private static final String TAG = CustomTileSource.class.getSimpleName();
     private static final String KEY = "7ae7631593e99a8fdd178671a12eb182";
     //    private static final String KEY = "0eae75863cf43e38391b849b9b76a4d6";
     //谷歌瓦片行编号=[谷歌参照瓦片行编号+(百度行编号 – 百度参照瓦片行编号)] //向右，行为递增
@@ -27,9 +27,12 @@ public class GoogleTileSource extends TileSourceFactory {
     //矢量
     //https://gg.8ditu.com/maps/vt?lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x=51&y=25&z=6&s=Galile&scale=2
     //谷歌矢量
+    //https://gg.8ditu.com/87d9a5cb78d372df49ddebb23f34fa4a/601B9BA7/maps/vt/lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x=103&y=49&z=7&s=Galile&scale=2 //我登录的
+    //https://gg.8ditu.com/6e5801bc14807d1f9b8b4040329babed/601B9BEF/maps/vt/lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x=24&y=11&z=5&s=Galile&scale=2 //未登录的
+    //https://gg.8ditu.com/0b0170b830205c770b1911b63ff04af5/601BBF1C/maps/vt/lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&x=417&y=211&z=9&s=Galile&scale=2
     public static final OnlineTileSourceBase googleTile = new XYTileSource("ggTile",
             4, 19, 256, ".png", new String[]{
-            "https://gg.8ditu.com/maps/vt?lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&s=Galile&scale=2",
+            "https://gg.8ditu.com/6e5801bc14807d1f9b8b4040329babed/601B9BEF/maps/vt?lyrs=m@207000000&hl=zh-CN&gl=CN&src=app&s=Galile&scale=2",
     }) {
         @Override
         public String getTileURLString(long pMapTileIndex) {
@@ -40,9 +43,11 @@ public class GoogleTileSource extends TileSourceFactory {
     };
     //谷歌影像
     //https://gg.8ditu.com/maps/vt?lyrs=s%40781&hl=zh-CN&gl=CN&x=108&y=46&z=7&src=app&scale=1
+    //https://gg.8ditu.com/a488c1a631bd042e54fd84ccd2e6cb85/601B9A19/maps/vt/lyrs=s%40781&hl=zh-CN&gl=CN&x=0&y=1&z=2&src=app&scale=1
+    //https://gg.8ditu.com/1ae5461ce2158d70cf22760f0ce936a5/601BBE98/maps/vt/lyrs=h%40781&hl=zh-CN&gl=CN&x=3336&y=1712&z=12&scale=1
     public static final OnlineTileSourceBase googleImg = new XYTileSource("ggImg",
             4, 19, 256, ".png", new String[]{
-            "https://gg.8ditu.com/maps/vt?lyrs=s%40781&hl=zh-CN&gl=CN&src=app&scale=1",
+            "https://gg.8ditu.com/1ae5461ce2158d70cf22760f0ce936a5/601BBE98/maps/vt?lyrs=s%40781&hl=zh-CN&gl=CN&src=app&scale=1",
     }) {
         @Override
         public String getTileURLString(long pMapTileIndex) {
@@ -52,24 +57,20 @@ public class GoogleTileSource extends TileSourceFactory {
         }
     };
     //谷歌影像标注
-    //https://gg.8ditu.com/maps/vt?lyrs=h%40781&hl=zh-CN&gl=CN&x=105&y=46&z=7&scale=1
+    //https://gg.8ditu.com/maps/vt?lyrs=h%40781&hl=zh-CN&gl=CN&x=105&y=46&z=7&scale=1\
+    //https://gg.8ditu.com/379159b5262d40fddfc136c3e99d2bc9/601B9A19/maps/vt/lyrs=h%40781&hl=zh-CN&gl=CN&x=0&y=2&z=2&scale=1
+    //https://gg.8ditu.com/3ea250deb31c0006b5d97b1e8e353781/601BBE98/maps/vt/lyrs=h%40781&hl=zh-CN&gl=CN&x=3335&y=1711&z=12&scale=1
     public static final OnlineTileSourceBase googleImgMark = new XYTileSource("ggImgMark",
             4, 19, 256, ".png", new String[]{
-            "https://gg.8ditu.com/maps/vt?lyrs=h%40781&hl=zh-CN&gl=CN&scale=1",
+            "https://gg.8ditu.com/3ea250deb31c0006b5d97b1e8e353781/601BBE98/maps/vt?lyrs=h%40781&hl=zh-CN&gl=CN&scale=1",
     }) {
         @Override
         public String getTileURLString(long pMapTileIndex) {
-            String url  = getBaseUrl() + "&x=" + MapTileIndex.getX(pMapTileIndex) + "&y=" + MapTileIndex.getY(pMapTileIndex) + "&z=" + MapTileIndex.getZoom(pMapTileIndex);
+            String url = getBaseUrl() + "&x=" + MapTileIndex.getX(pMapTileIndex) + "&y=" + MapTileIndex.getY(pMapTileIndex) + "&z=" + MapTileIndex.getZoom(pMapTileIndex);
             Log.e(TAG, "getTileURLString: ggImgMark：" + url);
             return url;
         }
     };
-
-
-
-
-
-
 
 
     public static final OnlineTileSourceBase GoogleHybrid = new XYTileSource("Google-Hybrid",
@@ -558,7 +559,7 @@ public class GoogleTileSource extends TileSourceFactory {
     /**
      * 记载的是自己发布的服务
      */
-    public static final OnlineTileSourceBase arcgisTile = new XYTileSource("arcgisTile", 1, 18, 256, ".png",
+    public static final OnlineTileSourceBase customArcgisTile = new XYTileSource("customArcgisTile", 1, 18, 256, ".png",
             new String[]{
 //                    "https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile"
 //                    "http://192.168.1.133:6080/arcgis/rest/services/test/bj/MapServer/tile",
@@ -581,11 +582,8 @@ public class GoogleTileSource extends TileSourceFactory {
             return url;
         }
     };
-    /**
-     * 记载的是arcgis平台自己的服务
-     * 能用
-     */
-    public static final OnlineTileSourceBase arcgisTile2 = new XYTileSource("arcgisTile2", 1, 18, 256, ".png",
+
+    public static final OnlineTileSourceBase arcgisTile = new XYTileSource("arcgisTile", 1, 18, 256, ".png",
             new String[]{
                     "https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineCommunity/MapServer/tile",
             }) {
@@ -602,6 +600,85 @@ public class GoogleTileSource extends TileSourceFactory {
             //http://192.168.1.133:6080/arcgis/rest/services/test/MyMapService/MapServer/tile/3/3/5
             String url = getBaseUrl() + "/" + z + "/" + y + "/" + x;
             Log.e(TAG, "getTileURLString: arcgisTile:" + url);
+            return url;
+        }
+    };
+    /**
+     * 用的平台发布的影像数据，路网数据用的是天地图的数据
+     */
+    public static final OnlineTileSourceBase arcgisImg = new XYTileSource("arcgisImg", 1, 18, 256, ".png",
+            new String[]{
+                    "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/",
+            }) {
+        @Override
+        public String getTileURLString(final long pMapTileIndex) {
+            int x = MapTileIndex.getX(pMapTileIndex);
+            int y = MapTileIndex.getY(pMapTileIndex);
+            int z = MapTileIndex.getZoom(pMapTileIndex);
+            String url = getBaseUrl() + "/" + z + "/" + y + "/" + x;
+            Log.e(TAG, "getTileURLString: arcgisTile:" + url);
+            return url;
+        }
+    };
+    /**
+     * osm矢量
+     */
+    //https://tile.openstreetmap.org/13/6745/3102.png
+    //https://tile.openstreetmap.org/6/55/23.png
+    public static final OnlineTileSourceBase osmTile = new XYTileSource("osmTile", 0, 18, 256, ".png",
+            new String[]{
+                    "https://tile.openstreetmap.org",
+                    "https://tile.openstreetmap.org",
+                    "https://tile.openstreetmap.org",
+            }) {
+        @Override
+        public String getTileURLString(final long pMapTileIndex) {
+            int x = MapTileIndex.getX(pMapTileIndex);
+            int y = MapTileIndex.getY(pMapTileIndex);
+            int z = MapTileIndex.getZoom(pMapTileIndex);
+            String url = getBaseUrl() + "/" + z + "/" + x + "/" + y + ".png";
+            Log.e(TAG, "getTileURLString: osmTile:" + url);
+            return url;
+        }
+    };
+    /**
+     * osm骑行运动地图
+     */
+    //https://b.tile.thunderforest.com/cycle/13/6742/3102.png?apikey=6170aad10dfd42a38d4d8c709a536f38
+    public static final OnlineTileSourceBase osmBicycle = new XYTileSource("osmBicycle", 0, 18, 256, ".png",
+            new String[]{
+                    "http://a.tile.thunderforest.com/cycle",
+                    "http://b.tile.thunderforest.com/cycle",
+                    "http://c.tile.thunderforest.com/cycle",
+            }) {
+        @Override
+        public String getTileURLString(final long pMapTileIndex) {
+            int x = MapTileIndex.getX(pMapTileIndex);
+            int y = MapTileIndex.getY(pMapTileIndex);
+            int z = MapTileIndex.getZoom(pMapTileIndex);
+            String url = getBaseUrl() + "/" + z + "/" + x + "/" + y + ".png?apikey=" + Osm_Key;
+            Log.e(TAG, "getTileURLString: osmBicycle:" + url);
+            return url;
+        }
+    };
+    private static final String Osm_Key = "6170aad10dfd42a38d4d8c709a536f38";
+    /**
+     * osm运输
+     */
+    //https://b.tile.thunderforest.com/transport/16/53947/24822.png?apikey=6170aad10dfd42a38d4d8c709a536f38
+    public static final OnlineTileSourceBase osmTransport = new XYTileSource("osmTransport", 0, 18, 256, ".png",
+            new String[]{
+                    "http://a.tile.thunderforest.com/transport",
+                    "http://b.tile.thunderforest.com/transport",
+                    "http://c.tile.thunderforest.com/transport",
+            }) {
+        @Override
+        public String getTileURLString(final long pMapTileIndex) {
+            int x = MapTileIndex.getX(pMapTileIndex);
+            int y = MapTileIndex.getY(pMapTileIndex);
+            int z = MapTileIndex.getZoom(pMapTileIndex);
+            String url = getBaseUrl() + "/" + z + "/" + x + "/" + y + ".png?apikey=" + Osm_Key;
+            Log.e(TAG, "getTileURLString: osmTransport:" + url);
             return url;
         }
     };

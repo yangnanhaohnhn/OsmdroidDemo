@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.GpsSatellite;
 import android.location.GpsStatus;
 import android.location.LocationListener;
@@ -27,6 +26,7 @@ import org.osmdroid.tileprovider.modules.ArchiveFileFactory;
 import org.osmdroid.tileprovider.modules.IArchiveFile;
 import org.osmdroid.tileprovider.modules.OfflineTileProvider;
 import org.osmdroid.tileprovider.tilesource.FileBasedTileSource;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -34,10 +34,10 @@ import org.osmdroid.views.overlay.TilesOverlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Iterator;
 import java.util.Set;
+
+import cn.gistone.osmdroiddemo.utils.RxMapUtil;
 
 /**
  * Create 2021/1/22
@@ -56,11 +56,14 @@ public class MapUtil {
     public static final int TYPE_TX_SL = 7;
     public static final int TYPE_TX_YX = 8;
     public static final int TYPE_TX_DX = 9;
-    public static final int TYPE_ARCGIS = 10;
-    public static final int TYPE_OSM_SL = 11;
-    public static final int TYPE_LX_DT = 12;
-    public static final int TYPE_GG_SL = 13;
-    public static final int TYPE_GG_YX = 14;
+    public static final int TYPE_ArcGis_SL = 10;
+    public static final int TYPE_ArcGis_YX = 11;
+    public static final int TYPE_OSM_SL = 12;
+    public static final int TYPE_OSM_BICYCLE = 13;
+    public static final int TYPE_OSM_TRANSPORT = 14;
+    public static final int TYPE_LX_DT = 15;
+    public static final int TYPE_GG_SL = 16;
+    public static final int TYPE_GG_YX = 17;
 
     public static int LOCATION_STATE = 0;
 
@@ -234,65 +237,70 @@ public class MapUtil {
         if (tilesOverlay != null) {
             mapView.getOverlayManager().remove(tilesOverlay);
         }
-
-
+        mapView.getTileProvider().clearTileCache();
+//        mapView.getTileProvider().getTileSource().name();
         switch (mapType) {
-            case TYPE_GG_SL://加载的慢 但能出来
-                mapView.setTileSource(GoogleTileSource.googleTile);
+            case TYPE_GG_SL://加载的慢 但能出来 需要动态去设置 不实用
+                mapView.setTileSource(CustomTileSource.googleTile);
                 break;
-            case TYPE_GG_YX://加载的慢 但能出来
-                mapView.setTileSource(GoogleTileSource.googleImg);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.googleImgMark), activity);
+            case TYPE_GG_YX://加载的慢 但能出来 需要动态去设置 不实用
+                mapView.setTileSource(CustomTileSource.googleImg);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.googleImgMark), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             case TYPE_TDT_SL://ok
-                mapView.setTileSource(GoogleTileSource.tianDiTuTileSource);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tianDiTuTileMarkSource), activity);
+                mapView.setTileSource(CustomTileSource.tianDiTuTileSource);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tianDiTuTileMarkSource), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             //天地图影像
             case TYPE_TDT_YX://ok
-                mapView.setTileSource(GoogleTileSource.tianDiTuImgSource);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tianDiTuImgMarkSource), activity);
+                mapView.setTileSource(CustomTileSource.tianDiTuImgSource);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tianDiTuImgMarkSource), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             case TYPE_TDT_DX:
                 //天地图地形 ok
-                mapView.setTileSource(GoogleTileSource.tianDiTuDxSource);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tianDiTuDxMarkSource), activity);
+                mapView.setTileSource(CustomTileSource.tianDiTuDxSource);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tianDiTuDxMarkSource), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             case TYPE_GD_SL://ok
-                mapView.setTileSource(GoogleTileSource.GaoDeTile);
+                mapView.setTileSource(CustomTileSource.GaoDeTile);
                 break;
             case TYPE_GD_YX://ok
-                mapView.setTileSource(GoogleTileSource.GaoDeImg);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.GeoDeImgMark), activity);
+                mapView.setTileSource(CustomTileSource.GaoDeImg);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.GeoDeImgMark), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
-            case TYPE_TX_SL://可以 转坐标
-                mapView.setTileSource(GoogleTileSource.tengxunTile);
+            case TYPE_TX_SL://可以
+                mapView.setTileSource(CustomTileSource.tengxunTile);
                 break;
-            case TYPE_TX_YX://可以 转坐标
-                mapView.setTileSource(GoogleTileSource.tengxunImg);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tengxunImgMark), activity);
+            case TYPE_TX_YX://可以
+                mapView.setTileSource(CustomTileSource.tengxunImg);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tengxunImgMark), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
-            case TYPE_TX_DX://可以 转坐标
-                mapView.setTileSource(GoogleTileSource.tengxunDx);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tengxunDxMark), activity);
+            case TYPE_TX_DX://可以
+                mapView.setTileSource(CustomTileSource.tengxunDx);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tengxunDxMark), activity);
                 mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             case TYPE_BD_SL://不行 试了很多，都不行
-                mapView.setTileSource(GoogleTileSource.baiduTile);
+                mapView.setTileSource(CustomTileSource.baiduTile);
                 break;
             case TYPE_BD_YX://不行 试了很多，都不行
-                mapView.setTileSource(GoogleTileSource.baiduImg);
-                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.baiduRoad), activity);
-                mapView.getOverlayManager().add(0, tilesOverlay);
+                mapView.setTileSource(CustomTileSource.baiduImg);
+//                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.baiduRoad), activity);
+//                mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
-            case TYPE_ARCGIS:
-                mapView.setTileSource(GoogleTileSource.arcgisTile2);
+            case TYPE_ArcGis_SL://可以
+                mapView.setTileSource(CustomTileSource.arcgisTile);
+                break;
+            case TYPE_ArcGis_YX://可以
+                mapView.setTileSource(CustomTileSource.arcgisImg);
+                tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tianDiTuDxMarkSource), activity);
+                mapView.getOverlayManager().add(0, tilesOverlay);
                 break;
             case TYPE_OSM_SL://ok 慢
                 //矢量图
@@ -305,7 +313,13 @@ public class MapUtil {
 //                mapView.setTileSource(TileSourceFactory.USGS_SAT);//能出来
 //                mapView.setTileSource(TileSourceFactory.BASE_OVERLAY_NL);//能出来，单是不行
 //                mapView.setTileSource(TileSourceFactory.ROADS_OVERLAY_NL);//能出来，单是不行
-                mapView.setTileProvider(new MapTileProviderBasic(activity));
+                mapView.setTileSource(CustomTileSource.osmTile);
+                break;
+            case TYPE_OSM_BICYCLE:
+                mapView.setTileSource(CustomTileSource.osmBicycle);
+                break;
+            case TYPE_OSM_TRANSPORT:
+                mapView.setTileSource(CustomTileSource.osmTransport);
                 break;
             case TYPE_LX_DT:
                 File externalStorageState = Environment.getExternalStorageDirectory();
@@ -330,8 +344,8 @@ public class MapUtil {
         File exitFile = new File(path);
         if (!exitFile.exists()) {
             //加载天地图矢量
-            mapView.setTileSource(GoogleTileSource.tianDiTuTileSource);
-            tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, GoogleTileSource.tianDiTuTileMarkSource), activity);
+            mapView.setTileSource(CustomTileSource.tianDiTuTileSource);
+            tilesOverlay = new TilesOverlay(new MapTileProviderBasic(activity, CustomTileSource.tianDiTuTileMarkSource), activity);
             mapView.getOverlayManager().add(0, tilesOverlay);
             return;
         }
@@ -347,24 +361,19 @@ public class MapUtil {
             try {
                 OfflineTileProvider tileProvider = new OfflineTileProvider(new SimpleRegisterReceiver(activity), new File[]{exitFile});
                 mapView.setTileProvider(tileProvider);
-//                if (!fileName.endsWith("zip")) {
-                    String source = "";
-                    IArchiveFile[] archives = tileProvider.getArchives();
-                    if (archives.length > 0) {
-                        Set<String> tileSources = archives[0].getTileSources();
-                        if (!tileSources.isEmpty()) {
-                            source = tileSources.iterator().next();
-                            FileBasedTileSource offlineTile = (FileBasedTileSource) FileBasedTileSource.getSource(source);
-                            mapView.setTileSource(offlineTile);
-                        }
-                    } else {
-                        Log.e("TAG", "加载的文件是 " + exitFile.getAbsolutePath() + " " + source);
+                String source = "";
+                IArchiveFile[] archives = tileProvider.getArchives();
+                if (archives.length > 0) {
+                    IArchiveFile archive = archives[0];
+                    Set<String> tileSources = archive.getTileSources();
+                    if (!tileSources.isEmpty()) {
+                        source = tileSources.iterator().next();
+                        FileBasedTileSource offlineTile = (FileBasedTileSource) FileBasedTileSource.getSource(source);
+                        mapView.setTileSource(offlineTile);
                     }
-//                } else {
-//                    String source = "hefeiosm";//注意 hefeiosm 为  /osmdroid/hefeiosm.zip  文件内的 第一级文件夹名
-//                    mapView.setTileSource(FileBasedTileSource.getSource(source));
-//                    mapView.invalidate();
-//                }
+                } else {
+                    Log.e("TAG", "加载的文件是 " + exitFile.getAbsolutePath() + " " + source);
+                }
                 mapView.invalidate();
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -372,5 +381,42 @@ public class MapUtil {
         } else {
             Log.e("TAG", "没有任何可以打开的文件！请先下载离线地图文件");
         }
+    }
+
+    //定位到北京
+    public static final double DEFAULT_LAT = 39.914658;
+    public static final double DEFAULT_LON = 116.403909;
+
+    /**
+     * 转成Gcj02
+     * 拿到的是WGS84
+     *
+     * @param type
+     * @param lat
+     * @param lgt
+     * @return
+     */
+    public static GeoPoint convertToGcj02(int type, double lat, double lgt) {
+        if (lgt == 0 || lat == 0) {
+            return new GeoPoint(DEFAULT_LAT, DEFAULT_LON);
+        }
+        Log.e("TAG", "convertToGcj02: " + type);
+        GeoPoint resGeoPoint = new GeoPoint(lat, lgt);
+        switch (type) {
+            case TYPE_GG_SL:
+            case TYPE_GG_YX:
+            case TYPE_GD_SL:
+            case TYPE_GD_YX:
+            case TYPE_TX_YX:
+            case TYPE_TX_SL:
+            case TYPE_TX_DX:
+            case TYPE_ArcGis_SL:
+                double[] doubles = RxMapUtil.gps84ToGcj02(lat, lgt);
+                resGeoPoint = new GeoPoint(doubles[0], doubles[1]);
+                break;
+            default:
+                break;
+        }
+        return resGeoPoint;
     }
 }
